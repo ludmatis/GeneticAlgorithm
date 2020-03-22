@@ -1,4 +1,5 @@
 import algorithm.Functions;
+import algorithm.GeneticAlgorithm;
 import algorithm.GreedyAndRandomAlghoritm;
 import model.City;
 import model.Individual;
@@ -22,7 +23,7 @@ public class Main {
         BufferedReader bufferedReader;
         bufferedReader = loader.getBufferedReader();
 
-        String[] tsp_data = new String[100];
+        String[] tsp_data = new String[1001];
         int index = 0;
         String read_line = "";
 
@@ -46,8 +47,8 @@ public class Main {
         //greedyAlghoritm.runRandomAlgorithm();
         Functions functions = new Functions(cityList);
         Individual individual = functions.generateIndividual();
-        System.out.println(individual);
-        Population population = functions.generatePopulation(900000);
+        //System.out.println(individual);
+        Population population = functions.generatePopulation(100);
         //System.out.println(population);
         Individual bestIndividual = functions.findBestIndividual(population);
         System.out.println(bestIndividual);
@@ -56,14 +57,19 @@ public class Main {
        // System.out.println(swapped);
         //Individual inversed = mutation.inverseMutation(bestIndividual);
         //System.out.println(inversed);
-        Crossover crossover = new Crossover(0.5);
+        Crossover crossover = new Crossover();
 //        Individual individuals = crossover.orderedCrossover(individual, bestIndividual);
 //        for(int i =0; i< individuals.length; i++){
 //            System.out.print(individuals[i].getId() + " ");
 //        }
 //        System.out.println(individuals);
-        List<Individual> individuals = crossover.partiallyMatchedCrossover(individual, bestIndividual);
-        individuals.forEach(System.out::println);
+//        List<Individual> individuals = crossover.partiallyMatchedCrossover(individual, bestIndividual);
+//        individuals.forEach(System.out::println);
+        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(functions);
+        Double bestIndividualOK = geneticAlgorithm.evolution();
+        System.out.println(bestIndividualOK);
+        Individual individual1 = crossover.orderedCrossover(bestIndividual, individual);
+        //System.out.println(individual1);
     }
 
 }

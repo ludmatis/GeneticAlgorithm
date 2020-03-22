@@ -9,6 +9,9 @@ public class Loader {
 
     private static final String BERLIN_11_MODIFIED_TSP = "berlin11_modified.tsp";
     private static final String BERLIN_52 = "berlin52.tsp";
+    private static final String KROA100 = "kroA100.tsp";
+    private static final String GR666 = "gr666.tsp";
+    private static final String FL417 = "fl417.tsp";
 
     private FileReader fileReader;
     private BufferedReader bufferedReader;
@@ -16,7 +19,7 @@ public class Loader {
 
 
     public void init() {
-        File file = new File(BERLIN_11_MODIFIED_TSP);
+        File file = new File(FL417);
         try {
             fileReader = new FileReader(file);
         } catch (FileNotFoundException e) {

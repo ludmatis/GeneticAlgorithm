@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 public class Crossover {
 
-    private Double crossover_prob;
 
-    public Crossover(Double crossover_prob) {
-        this.crossover_prob = crossover_prob;
+
+    public Crossover() {
+
     }
 
 
@@ -22,7 +22,7 @@ public class Crossover {
         Random random = new Random();
         List<City> parent1_cities = parent1.getList_of_cities();
         List<City> parent2_cities = parent2.getList_of_cities();
-        List<City> xd = parent2.getList_of_cities().stream().map(City::new).collect(Collectors.toList());
+        //List<City> xd = parent2.getList_of_cities().stream().map(City::new).collect(Collectors.toList());
         City[] cities = new City[parent1_cities.size()];
 
 
@@ -44,30 +44,6 @@ public class Crossover {
         }
 
         List<City> parent1_sublist = parent1_cities.subList(first_cut_index, second_cut_index);
-//        List<Integer> indexes_of_sublist_cities = new ArrayList<>();
-//        parent1_sublist.forEach(city -> {
-//            int index = parent2_cities.indexOf(city);
-//            indexes_of_sublist_cities.add(index);
-//        });
-        //indexes_of_sublist_cities.sort(Collections.reverseOrder());
-        //indexes_of_sublist_cities.forEach(integer -> parent2_cities.remove(integer.intValue()));
-//        City[] cities1 = new City[parent1_cities.size()];
-//        for(int i=0; i<parent2_cities.size(); i++){
-//            cities1[i] = parent2_cities.get(i);
-//        }
-//        for (City city : parent1_sublist) {
-//            for (int j = 0; j < cities1.length; j++) {
-//                if (city.equals(cities1[j])) {
-//                    cities1[j] = null;
-//                }
-//            }
-//        }
-//        for(int i = 0; i<cities1.length; i++){
-//            if(cities1[i]!=null)
-//                System.out.print(cities1[i].getId() + " ");
-//        }
-
-
         for (City city : parent1_sublist) {
             for (int j = 0; j < parent2_cities.size(); j++) {
                 if (city.equals(parent2_cities.get(j))) {
@@ -75,8 +51,6 @@ public class Crossover {
                 }
             }
         }
-        parent2_cities.forEach(city -> System.out.print(city.getId() + " "));
-        System.out.println("----------");
 
         int temp_index = 0;
         for (int i = first_cut_index; i < second_cut_index; i++) {
@@ -84,16 +58,16 @@ public class Crossover {
             temp_index++;
         }
         int counter = 0;
-        for (int i = 0; i < cities.length; i++) {
+        for (int i = 0; i < cities.length  ; i++) {
             if (cities[i] == null) {
                 cities[i] = parent2_cities.get(counter);
                 counter++;
             }
         }
         List<City> to_return = new ArrayList<>(Arrays.asList(cities));
-        System.out.println(first_cut_index);
-        System.out.println(second_cut_index);
-        return new Individual(to_return);
+        Individual individual = new Individual(to_return);
+        //System.out.println(individual);
+        return individual;
 
     }
 
@@ -115,10 +89,10 @@ public class Crossover {
             second_cut_index = temp;
         }
 
-        System.out.println(first_cut_index);
-        System.out.println(second_cut_index);
-        first_cut_index = 0;
-        second_cut_index = 8;
+        //System.out.println(first_cut_index);
+        //System.out.println(second_cut_index);
+        //first_cut_index = 0;
+        //second_cut_index = 8;
         Individual child1 = generateChildFromPMX(parent1_cities, parent2_cities, first_cut_index, second_cut_index);
         Individual child2 = generateChildFromPMX(parent2_cities, parent1_cities, first_cut_index, second_cut_index);
 
