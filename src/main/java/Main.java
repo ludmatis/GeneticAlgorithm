@@ -1,75 +1,56 @@
 import algorithm.Functions;
 import algorithm.GeneticAlgorithm;
-import algorithm.GreedyAndRandomAlghoritm;
+import algorithm.GreedyAlgorithm;
+import algorithm.RandomAlgorithm;
 import model.City;
-import model.Individual;
 import model.Population;
-import operator.Crossover;
-import operator.Mutation;
 import utility.CityCreator;
-import utility.Loader;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
 public class Main {
 
+    private static final boolean GENETIC = false;
+    private static final boolean RANDOM = true;
+    private static final boolean GREEDY = false;
+
     public static void main(String[] args) throws IOException {
 
-        Loader loader = new Loader();
-        loader.init();
 
-        BufferedReader bufferedReader;
-        bufferedReader = loader.getBufferedReader();
+        CityCreator cityCreator = new CityCreator();
+        List<City> cityList;
+        cityList = cityCreator.generateCities();
+        Functions functions = new Functions(cityList);
+        GreedyAlgorithm greedyAlghoritm = new GreedyAlgorithm(cityList);
+        RandomAlgorithm x = new RandomAlgorithm(functions);
+        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(functions);
 
-        String[] tsp_data = new String[1001];
-        int index = 0;
-        String read_line = "";
-
-        while ((read_line = bufferedReader.readLine()) != null) {
-            tsp_data[index] = read_line;
-            index++;
+        if (GREEDY) {
+            Population population1 = greedyAlghoritm.runGreedyAlgorithm();
+            //Individual okk = functions.findBestIndividual(population1);
+            //System.out.println(okk);
+            List<Double> results = greedyAlghoritm.resultsOfGreedyAlgorithm();
+            System.out.println("Best: " + results.get(0));
+            System.out.println("Average: " + results.get(1));
+            System.out.println("Worst: " + results.get(2));
+            System.out.println("Standard deviation: " + results.get(3));
+        }
+        if (RANDOM) {
+            List<Double> results = x.runRandomAlgorithm();
+            System.out.println("Best: " + results.get(0));
+            System.out.println("Average: " + results.get(1));
+            System.out.println("Worst: " + results.get(2));
+            System.out.println("Standard deviation: " + results.get(3));
+        }
+        if (GENETIC) {
+            for (int i = 1; i < 11; i++) {
+                geneticAlgorithm.evolution(greedyAlghoritm.runGreedyAlgorithm());
+            }
+            geneticAlgorithm.saveMeasurementsToFile();
         }
 
-        List<City> cityList;
-        CityCreator cityCreator = new CityCreator(tsp_data);
-        cityList = cityCreator.generateCities();
 
-        //cityList.forEach(System.out::println);
-
-        GreedyAndRandomAlghoritm greedyAlghoritm = new GreedyAndRandomAlghoritm(cityList);
-
-        //Population population1 = greedyAlghoritm.runGreedyAlgorithm();
-        //City city = cityList.get(0);
-        //City city1 = cityList.get(1);
-        //System.out.println(greedyAlghoritm.countDistance(city,city1 ));
-        //greedyAlghoritm.runRandomAlgorithm();
-        Functions functions = new Functions(cityList);
-        Individual individual = functions.generateIndividual();
-        //System.out.println(individual);
-        Population population = functions.generatePopulation(100);
-        //System.out.println(population);
-        Individual bestIndividual = functions.findBestIndividual(population);
-        System.out.println(bestIndividual);
-        //Mutation mutation = new Mutation(0.5);
-        //Individual swapped = mutation.swapMutation(bestIndividual);
-       // System.out.println(swapped);
-        //Individual inversed = mutation.inverseMutation(bestIndividual);
-        //System.out.println(inversed);
-        Crossover crossover = new Crossover();
-//        Individual individuals = crossover.orderedCrossover(individual, bestIndividual);
-//        for(int i =0; i< individuals.length; i++){
-//            System.out.print(individuals[i].getId() + " ");
-//        }
-//        System.out.println(individuals);
-//        List<Individual> individuals = crossover.partiallyMatchedCrossover(individual, bestIndividual);
-//        individuals.forEach(System.out::println);
-        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(functions);
-        Double bestIndividualOK = geneticAlgorithm.evolution();
-        System.out.println(bestIndividualOK);
-        Individual individual1 = crossover.orderedCrossover(bestIndividual, individual);
-        //System.out.println(individual1);
     }
 
 }

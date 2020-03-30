@@ -15,6 +15,9 @@ public class Population {
         this.population = population;
     }
 
+    public Population(Population population){
+        this.population = population.getPopulation();
+    }
     public List<Individual> getPopulation() {
         return population;
     }

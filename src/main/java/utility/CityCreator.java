@@ -1,20 +1,38 @@
+//class for transforming loaded data from tsp file to City objects
 package utility;
 
 import model.City;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CityCreator {
 
-    private String[] read_from_file;
     private List<City> cityList = new ArrayList<>();
 
-    public CityCreator(String[] list_of_cities) {
-        this.read_from_file = list_of_cities;
+    public CityCreator() {
     }
+    private String[] generateTspData() throws IOException {
+        Loader loader = new Loader();
+        loader.init();
 
-    public List<City> generateCities() {
+        BufferedReader bufferedReader;
+        bufferedReader = loader.getBufferedReader();
+
+        String[] tsp_data = new String[1001];
+        int index = 0;
+        String read_line = "";
+
+        while ((read_line = bufferedReader.readLine()) != null) {
+            tsp_data[index] = read_line;
+            index++;
+        }
+        return tsp_data;
+    }
+    public List<City> generateCities() throws IOException {
+        String[] read_from_file = generateTspData();
         for (int i = 6; i < read_from_file.length; i++) {
             if (read_from_file[i] != null) {
                 if (read_from_file[i].equals("EOF")) {
